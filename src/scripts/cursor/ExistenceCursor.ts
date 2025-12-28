@@ -1,5 +1,6 @@
 // ExistenceCursor - 存在の痕跡
 // あなたが画面に触れた証
+// 速度で歪む - 急いでいる時の焦り
 
 import gsap from 'gsap';
 
@@ -14,9 +15,10 @@ export class ExistenceCursor {
   private cursorTrail: HTMLElement[];
 
   private mouse = { x: 0, y: 0 };
+  private prevMouse = { x: 0, y: 0 };
   private currentPos = { x: 0, y: 0 };
+  private velocity = { x: 0, y: 0 };
   private isHovering = false;
-  private isClicking = false;
   private trailCount = 5;
 
   constructor(options: CursorOptions) {
@@ -111,7 +113,6 @@ export class ExistenceCursor {
   }
 
   private onMouseDown(): void {
-    this.isClicking = true;
     gsap.to(this.cursorInner, {
       scale: 0.8,
       duration: 0.1,
@@ -123,7 +124,6 @@ export class ExistenceCursor {
   }
 
   private onMouseUp(): void {
-    this.isClicking = false;
     gsap.to(this.cursorInner, {
       scale: this.isHovering ? 1.5 : 1,
       duration: 0.3,
@@ -170,12 +170,28 @@ export class ExistenceCursor {
   }
 
   private animate(): void {
+    // Calculate velocity (速度計算)
+    this.velocity.x = this.mouse.x - this.prevMouse.x;
+    this.velocity.y = this.mouse.y - this.prevMouse.y;
+    this.prevMouse.x = this.mouse.x;
+    this.prevMouse.y = this.mouse.y;
+
     // Smooth cursor following
     const ease = 0.15;
     this.currentPos.x += (this.mouse.x - this.currentPos.x) * ease;
     this.currentPos.y += (this.mouse.y - this.currentPos.y) * ease;
 
-    // Main cursor
+    // Calculate skew based on velocity (速度でスキュー)
+    const speed = Math.sqrt(this.velocity.x ** 2 + this.velocity.y ** 2);
+    const angle = Math.atan2(this.velocity.y, this.velocity.x) * (180 / Math.PI);
+    const squeeze = Math.min(speed * 0.015, 0.5); // Max 50% squeeze
+
+    // Apply skew transform to cursor
+    const scaleX = 1 + squeeze;
+    const scaleY = 1 - squeeze * 0.5;
+    this.cursorInner.style.transform = `rotate(${angle}deg) scale(${scaleX}, ${scaleY})`;
+
+    // Main cursor position
     this.cursor.style.left = `${this.currentPos.x}px`;
     this.cursor.style.top = `${this.currentPos.y}px`;
 

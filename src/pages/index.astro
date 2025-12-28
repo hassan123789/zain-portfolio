@@ -13,11 +13,11 @@ import Layout from '../layouts/Layout.astro';
   <main class="relative min-h-screen" x-data="survivalApp()">
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24">
+    <section id="hero" class="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24">
       <div class="max-w-5xl">
-        <!-- Terminal-style greeting -->
+        <!-- Terminal-style greeting with typing effect -->
         <div class="mb-8 font-mono text-sm text-muted">
-          <span class="text-wave-high">$</span> whoami
+          <span class="text-wave-high">$</span> <span data-typing data-typing-text="whoami" data-typing-speed="80"></span>
         </div>
 
         <!-- Name with glitch effect -->
@@ -243,6 +243,49 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
 
+    <!-- Stats Section -->
+    <section id="stats" class="py-24 px-6 md:px-12 lg:px-24">
+      <div class="max-w-6xl mx-auto">
+        <div class="mb-12 font-mono text-sm text-muted terminal-header">
+          <span class="text-wave-high">$</span> <span data-typing data-typing-text="cat stats.json | jq" data-typing-speed="60" data-typing-delay="2000"></span>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8" data-reveal="stagger">
+          <!-- Stat 1 -->
+          <div class="text-center glass rounded-xl p-6" data-magnetic="0.15">
+            <div class="text-4xl md:text-5xl font-bold text-wave-high mb-2">
+              <span data-counter="24" data-counter-suffix="歳">0歳</span>
+            </div>
+            <div class="text-muted text-sm">Age</div>
+          </div>
+
+          <!-- Stat 2 -->
+          <div class="text-center glass rounded-xl p-6" data-magnetic="0.15">
+            <div class="text-4xl md:text-5xl font-bold text-wave-low mb-2">
+              <span data-counter="20" data-counter-suffix="年">0年</span>
+            </div>
+            <div class="text-muted text-sm">In Japan</div>
+          </div>
+
+          <!-- Stat 3 -->
+          <div class="text-center glass rounded-xl p-6" data-magnetic="0.15">
+            <div class="text-4xl md:text-5xl font-bold text-pulse mb-2">
+              <span data-counter="1" data-counter-suffix="年目">0年目</span>
+            </div>
+            <div class="text-muted text-sm">Freelance</div>
+          </div>
+
+          <!-- Stat 4 -->
+          <div class="text-center glass rounded-xl p-6" data-magnetic="0.15">
+            <div class="text-4xl md:text-5xl font-bold text-life mb-2">
+              <span data-counter="100" data-counter-suffix="%">0%</span>
+            </div>
+            <div class="text-muted text-sm">Survival Rate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24">
       <div class="w-full max-w-3xl">
@@ -317,6 +360,8 @@ import Layout from '../layouts/Layout.astro';
   import { ExistenceCursor } from '../scripts/cursor/ExistenceCursor';
   import { OpeningSequence } from '../scripts/animation/OpeningSequence';
   import { initSectionReveals, initMagneticElements } from '../scripts/animation/SectionReveal';
+  import { ProgressIndicator, initCounters } from '../scripts/animation/ProgressIndicator';
+  import { initTypingEffects } from '../scripts/animation/TypingEffect';
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -388,6 +433,17 @@ import Layout from '../layouts/Layout.astro';
       // Section reveals
       initSectionReveals();
       initMagneticElements();
+
+      // Typing effects
+      initTypingEffects();
+
+      // Counters
+      initCounters();
+
+      // Progress indicator (desktop only)
+      if (window.innerWidth >= 1024) {
+        new ProgressIndicator();
+      }
 
       // Hero text animation
       gsap.from('.glitch', {

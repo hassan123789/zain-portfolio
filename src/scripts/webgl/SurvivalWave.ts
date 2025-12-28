@@ -172,6 +172,33 @@ export class SurvivalWave {
 		this.container.appendChild(this.renderer.domElement);
 		this.isRunning = true;
 		this.animate();
+
+		// IntersectionObserver for performance optimization
+		// Stop rendering when not visible
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						this.resume();
+					} else {
+						this.pause();
+					}
+				});
+			},
+			{ threshold: 0 }
+		);
+		observer.observe(this.container);
+	}
+
+	public pause(): void {
+		this.isRunning = false;
+	}
+
+	public resume(): void {
+		if (!this.isRunning) {
+			this.isRunning = true;
+			this.animate();
+		}
 	}
 
 	public unmount(): void {
