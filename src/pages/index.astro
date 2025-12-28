@@ -310,32 +310,37 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <script>
+  import Alpine from 'alpinejs';
   import { SurvivalWave } from '../scripts/webgl/SurvivalWave';
 
-  // Alpine.js app
-  document.addEventListener('alpine:init', () => {
-    // @ts-ignore
-    Alpine.data('survivalApp', () => ({
-      mood: 50,
-      wave: null as SurvivalWave | null,
+  // Keep wave instance OUTSIDE Alpine's reactive scope
+  // Alpine proxies break Three.js objects
+  let waveInstance: SurvivalWave | null = null;
 
-      init() {
-        const container = document.getElementById('webgl-container');
-        if (container) {
-          this.wave = new SurvivalWave({
-            container,
-            particleCount: 80
-          });
-          this.wave.mount();
-        }
-      },
+  // Register Alpine data before starting
+  Alpine.data('survivalApp', () => ({
+    mood: 50,
 
-      updateMood(value: string) {
-        const normalizedMood = parseInt(value) / 100;
-        if (this.wave) {
-          this.wave.setMood(normalizedMood);
-        }
+    init() {
+      const container = document.getElementById('webgl-container');
+      if (container && !waveInstance) {
+        waveInstance = new SurvivalWave({
+          container,
+          particleCount: 80
+        });
+        waveInstance.mount();
       }
-    }));
-  });
+    },
+
+    updateMood(value: string) {
+      const normalizedMood = parseInt(value) / 100;
+      if (waveInstance) {
+        waveInstance.setMood(normalizedMood);
+      }
+    }
+  }));
+
+  // Start Alpine
+  window.Alpine = Alpine;
+  Alpine.start();
 </script>
