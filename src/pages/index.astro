@@ -14,7 +14,7 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- Hero Section -->
     <section id="hero" class="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24">
-      <div class="max-w-5xl">
+      <div class="max-w-5xl content-backdrop">
         <!-- Terminal-style greeting with typing effect -->
         <div class="mb-8 font-mono text-sm text-muted">
           <span class="text-wave-high">$</span> <span data-typing data-typing-text="whoami" data-typing-speed="80"></span>
@@ -72,7 +72,7 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- About Section -->
     <section id="about" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24 terminal-section">
-      <div class="max-w-4xl">
+      <div class="max-w-4xl content-backdrop">
         <div class="mb-8 font-mono text-sm text-muted terminal-header">
           <span class="text-wave-high">$</span> cat about.md
         </div>
@@ -106,7 +106,7 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- Skills Section -->
     <section id="skills" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24 terminal-section">
-      <div class="w-full max-w-6xl">
+      <div class="w-full max-w-6xl content-backdrop">
         <div class="mb-12 font-mono text-sm text-muted terminal-header">
           <span class="text-wave-high">$</span> ls -la skills/
         </div>
@@ -165,7 +165,7 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- Articles Section -->
     <section id="articles" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24">
-      <div class="w-full max-w-4xl">
+      <div class="w-full max-w-4xl content-backdrop">
         <div class="mb-12 font-mono text-sm text-muted">
           <span class="text-wave-high">$</span> tail -f articles.log
         </div>
@@ -245,7 +245,7 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- Stats Section -->
     <section id="stats" class="py-24 px-6 md:px-12 lg:px-24">
-      <div class="max-w-6xl mx-auto">
+      <div class="max-w-6xl mx-auto content-backdrop">
         <div class="mb-12 font-mono text-sm text-muted terminal-header">
           <span class="text-wave-high">$</span> <span data-typing data-typing-text="cat stats.json | jq" data-typing-speed="60" data-typing-delay="2000"></span>
         </div>
@@ -288,7 +288,7 @@ import Layout from '../layouts/Layout.astro';
 
     <!-- Contact Section -->
     <section id="contact" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24">
-      <div class="w-full max-w-3xl">
+      <div class="w-full max-w-3xl content-backdrop">
         <div class="mb-12 font-mono text-sm text-muted">
           <span class="text-wave-high">$</span> echo $CONTACT_INFO
         </div>

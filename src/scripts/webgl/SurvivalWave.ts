@@ -54,12 +54,12 @@ export class SurvivalWave {
 		this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 		this.renderer.setClearColor(0x000000, 0);
 
-		// Initialize uniforms
+		// Initialize uniforms - balanced opacity
 		this.waveUniforms = {
 			uTime: { value: 0 },
 			uMood: { value: 0.5 },
 			uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-			uOpacity: { value: 0.8 },
+			uOpacity: { value: 0.6 },  // Balanced visibility
 		};
 
 		this.particleUniforms = {
@@ -69,7 +69,7 @@ export class SurvivalWave {
 			uResolution: {
 				value: new THREE.Vector2(window.innerWidth, window.innerHeight),
 			},
-			uOpacity: { value: 0.6 },
+			uOpacity: { value: 0.45 },  // Balanced visibility
 		};
 
 		// Create meshes

@@ -160,6 +160,37 @@ body {
   border: 1px solid rgba(232, 232, 240, 0.1);
 }
 
+/* Content sections - subtle background for readability */
+section {
+  position: relative;
+}
+
+section > div:first-child {
+  position: relative;
+  z-index: 1;
+}
+
+/* Backdrop for content areas */
+.content-backdrop {
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 50%,
+    rgba(10, 10, 15, 0.85) 0%,
+    rgba(10, 10, 15, 0.5) 50%,
+    transparent 100%
+  );
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+/* Terminal sections get darker backdrop */
+.terminal-section .terminal-content {
+  background: rgba(10, 10, 15, 0.75);
+  backdrop-filter: blur(12px);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(232, 232, 240, 0.05);
+}
+
 /* Noise overlay */
 .noise::before {
   content: '';

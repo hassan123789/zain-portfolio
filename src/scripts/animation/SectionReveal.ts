@@ -9,7 +9,8 @@ gsap.registerPlugin(ScrollTrigger);
 export function initSectionReveals(): void {
   // Terminal sections - type in effect
   gsap.utils.toArray<HTMLElement>('.terminal-section').forEach((section) => {
-    const content = section.querySelector('.terminal-content');
+    // Skip terminal-content that also has data-reveal (to avoid double animation)
+    const content = section.querySelector('.terminal-content:not([data-reveal])');
     const header = section.querySelector('.terminal-header');
 
     const tl = gsap.timeline({
@@ -17,7 +18,7 @@ export function initSectionReveals(): void {
         trigger: section,
         start: 'top 80%',
         end: 'top 30%',
-        toggleActions: 'play none none reverse'
+        toggleActions: 'play none none none'  // Don't reverse - keep visible
       }
     });
 
@@ -73,13 +74,14 @@ export function initSectionReveals(): void {
     });
   });
 
-  // Fade up elements
+  // Fade up elements - once only
   gsap.utils.toArray<HTMLElement>('[data-reveal="fade-up"]').forEach((el) => {
     gsap.from(el, {
       scrollTrigger: {
         trigger: el,
         start: 'top 85%',
-        toggleActions: 'play none none reverse'
+        toggleActions: 'play none none none',
+        once: true
       },
       opacity: 0,
       y: 40,
@@ -88,15 +90,19 @@ export function initSectionReveals(): void {
     });
   });
 
-  // Stagger children
+  // Stagger children - once only, don't reverse
   gsap.utils.toArray<HTMLElement>('[data-reveal="stagger"]').forEach((container) => {
     const children = container.children;
+
+    // Set initial state explicitly
+    gsap.set(children, { opacity: 1, y: 0 });
 
     gsap.from(children, {
       scrollTrigger: {
         trigger: container,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse'
+        start: 'top 85%',
+        toggleActions: 'play none none none',  // Don't reverse
+        once: true  // Only animate once
       },
       opacity: 0,
       y: 30,

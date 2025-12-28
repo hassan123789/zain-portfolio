@@ -9,10 +9,11 @@ uniform float uOpacity;
 varying float vAlpha;
 varying float vIndex;
 
-vec3 colorWaveHigh = vec3(0.0, 0.83, 1.0);
-vec3 colorWaveLow = vec3(0.49, 0.23, 0.93);
-vec3 colorPulse = vec3(1.0, 0.2, 0.4);
-vec3 colorLife = vec3(0.06, 0.73, 0.51);
+// Muted colors for subtlety
+vec3 colorWaveHigh = vec3(0.0, 0.45, 0.55);
+vec3 colorWaveLow = vec3(0.3, 0.12, 0.5);
+vec3 colorPulse = vec3(0.55, 0.12, 0.25);
+vec3 colorLife = vec3(0.04, 0.4, 0.3);
 
 void main() {
   // Circular particle shape
@@ -41,9 +42,9 @@ void main() {
   // Mood affects color intensity
   color = mix(color * 0.5, color, uMood);
 
-  // Pulsing
-  float pulse = sin(uTime * 2.0 + vIndex) * 0.5 + 0.5;
-  alpha *= 0.5 + pulse * 0.5;
+  // Pulsing - balanced intensity
+  float pulse = sin(uTime * 1.8 + vIndex) * 0.4 + 0.5;
+  alpha *= 0.4 + pulse * 0.4;
 
-  gl_FragColor = vec4(color, alpha * vAlpha * uOpacity);
+  gl_FragColor = vec4(color, alpha * vAlpha * uOpacity * 0.8);
 }
