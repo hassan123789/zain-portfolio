@@ -1,0 +1,341 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+  <!-- WebGL Canvas Background -->
+  <div id="webgl-container" class="fixed inset-0 -z-10"></div>
+
+  <!-- Noise Overlay -->
+  <div class="noise pointer-events-none"></div>
+
+  <!-- Main Content -->
+  <main class="relative min-h-screen" x-data="survivalApp()">
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24">
+      <div class="max-w-5xl">
+        <!-- Terminal-style greeting -->
+        <div class="mb-8 font-mono text-sm text-muted">
+          <span class="text-wave-high">$</span> whoami
+        </div>
+
+        <!-- Name with glitch effect -->
+        <h1
+          class="glitch text-6xl md:text-8xl lg:text-9xl font-bold mb-6 tracking-tight"
+          data-text="ZAIN"
+        >
+          <span class="text-gradient-wave">ZAIN</span>
+        </h1>
+
+        <!-- Philosophy -->
+        <div class="space-y-4 mb-12">
+          <p class="text-xl md:text-2xl text-light font-light tracking-wide">
+            <span class="text-wave-high font-mono">Action</span>
+            <span class="text-muted">=</span>
+            <span class="text-wave-low font-mono">f</span>
+            <span class="text-muted">(</span>
+            <span class="text-pulse font-mono">Survival of Identity</span>
+            <span class="text-muted">)</span>
+          </p>
+
+          <p class="text-lg text-muted italic">
+            すべての行動は、アイデンティティが生き延びるためのもの
+          </p>
+        </div>
+
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-3 mb-12">
+          <span class="px-3 py-1 text-sm glass rounded-full text-wave-high border border-wave-high/30">
+            Web Engineer
+          </span>
+          <span class="px-3 py-1 text-sm glass rounded-full text-wave-low border border-wave-low/30">
+            🇵🇰→🇯🇵
+          </span>
+          <span class="px-3 py-1 text-sm glass rounded-full text-pulse border border-pulse/30">
+            Survivor
+          </span>
+          <span class="px-3 py-1 text-sm glass rounded-full text-life border border-life/30">
+            Pura Vida
+          </span>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="animate-float">
+          <div class="flex items-center gap-2 text-muted text-sm">
+            <span class="w-8 h-px bg-muted"></span>
+            <span>scroll to explore</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24">
+      <div class="max-w-4xl">
+        <div class="mb-8 font-mono text-sm text-muted">
+          <span class="text-wave-high">$</span> cat about.md
+        </div>
+
+        <div class="space-y-8 text-lg leading-relaxed">
+          <p class="text-light">
+            <span class="text-wave-high font-bold">24歳</span>。Web Engineer。フリーランス1年生。
+          </p>
+
+          <p class="text-muted">
+            パキスタンで生まれ、4歳で日本に来た。日本では「外人」と呼ばれ、
+            パキスタンに帰れば「日本人」と言われた。
+          </p>
+
+          <p class="text-muted">
+            <span class="text-pulse">どっちの国でも、私は「外」の人間だった。</span>
+          </p>
+
+          <p class="text-muted">
+            双極性障害。虐待サバイバー。元ムスリム。
+            属性を並べるとこうなる。でも、これだけじゃ伝わらないことがたくさんある。
+          </p>
+
+          <blockquote class="pl-6 border-l-2 border-wave-high text-xl text-light italic">
+            "私の人生は「普通」じゃない。<br>
+            だから書く。私にしか書けないことを。"
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24">
+      <div class="w-full max-w-6xl">
+        <div class="mb-12 font-mono text-sm text-muted">
+          <span class="text-wave-high">$</span> ls -la skills/
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Skill Card -->
+          <div class="glass rounded-xl p-6 hover:border-wave-high/50 transition-all duration-300 group">
+            <div class="text-3xl mb-4">💻</div>
+            <h3 class="text-xl font-bold text-light mb-2 group-hover:text-wave-high transition-colors">
+              Web Development
+            </h3>
+            <p class="text-muted text-sm mb-4">
+              TypeScript, React, Next.js, Astro, Node.js, Three.js
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 text-xs bg-wave-high/10 text-wave-high rounded">TypeScript</span>
+              <span class="px-2 py-1 text-xs bg-wave-low/10 text-wave-low rounded">React</span>
+              <span class="px-2 py-1 text-xs bg-pulse/10 text-pulse rounded">Three.js</span>
+            </div>
+          </div>
+
+          <!-- AI Card -->
+          <div class="glass rounded-xl p-6 hover:border-wave-low/50 transition-all duration-300 group">
+            <div class="text-3xl mb-4">🎨</div>
+            <h3 class="text-xl font-bold text-light mb-2 group-hover:text-wave-low transition-colors">
+              AI Image Generation
+            </h3>
+            <p class="text-muted text-sm mb-4">
+              ComfyUI, Stable Diffusion, LoRA Training, Local AI Setup
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 text-xs bg-wave-high/10 text-wave-high rounded">ComfyUI</span>
+              <span class="px-2 py-1 text-xs bg-wave-low/10 text-wave-low rounded">SD</span>
+              <span class="px-2 py-1 text-xs bg-life/10 text-life rounded">Local AI</span>
+            </div>
+          </div>
+
+          <!-- Writing Card -->
+          <div class="glass rounded-xl p-6 hover:border-pulse/50 transition-all duration-300 group">
+            <div class="text-3xl mb-4">✍️</div>
+            <h3 class="text-xl font-bold text-light mb-2 group-hover:text-pulse transition-colors">
+              Writing & Content
+            </h3>
+            <p class="text-muted text-sm mb-4">
+              技術記事、生存日記、YouTube、note
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 text-xs bg-wave-high/10 text-wave-high rounded">note</span>
+              <span class="px-2 py-1 text-xs bg-pulse/10 text-pulse rounded">YouTube</span>
+              <span class="px-2 py-1 text-xs bg-life/10 text-life rounded">Tech Blog</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Articles Section -->
+    <section id="articles" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24">
+      <div class="w-full max-w-4xl">
+        <div class="mb-12 font-mono text-sm text-muted">
+          <span class="text-wave-high">$</span> tail -f articles.log
+        </div>
+
+        <div class="space-y-6">
+          <!-- Article Item -->
+          <a
+            href="https://note.com/zain14/n/n4bb5ec70914f"
+            target="_blank"
+            class="block glass rounded-xl p-6 hover:border-wave-high/50 transition-all duration-300 group"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span class="text-xs text-wave-high font-mono mb-2 block">📌 PINNED</span>
+                <h3 class="text-xl font-bold text-light mb-2 group-hover:text-wave-high transition-colors">
+                  自己紹介｜パキスタン×日本×双極×虐待サバイバー×エンジニアの24歳
+                </h3>
+                <p class="text-muted text-sm">
+                  私は、どこにも属せなかった。だから書く。私にしか書けないことを。
+                </p>
+              </div>
+              <span class="text-2xl opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+            </div>
+          </a>
+
+          <a
+            href="https://note.com/zain14/n/n2adc40260a7a"
+            target="_blank"
+            class="block glass rounded-xl p-6 hover:border-wave-low/50 transition-all duration-300 group"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span class="text-xs text-wave-low font-mono mb-2 block">🔥 POPULAR</span>
+                <h3 class="text-xl font-bold text-light mb-2 group-hover:text-wave-low transition-colors">
+                  月額0円でNSFW AIを自宅で動かす完全ガイド
+                </h3>
+                <p class="text-muted text-sm">
+                  ゲーミングPC活用術 - ローカルAI画像生成の決定版
+                </p>
+              </div>
+              <span class="text-2xl opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+            </div>
+          </a>
+
+          <a
+            href="https://note.com/zain14/n/nc3e8a394636f"
+            target="_blank"
+            class="block glass rounded-xl p-6 hover:border-pulse/50 transition-all duration-300 group"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span class="text-xs text-pulse font-mono mb-2 block">💭 PHILOSOPHY</span>
+                <h3 class="text-xl font-bold text-light mb-2 group-hover:text-pulse transition-colors">
+                  「普通になれない」と思っていたけど、OSが違うだけだった
+                </h3>
+                <p class="text-muted text-sm">
+                  自分を責めるのをやめて、システムとして理解する
+                </p>
+              </div>
+              <span class="text-2xl opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="mt-8 text-center">
+          <a
+            href="https://note.com/zain14"
+            target="_blank"
+            class="inline-flex items-center gap-2 px-6 py-3 glass rounded-full text-wave-high hover:bg-wave-high/10 transition-colors"
+          >
+            <span>View all articles on note</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24">
+      <div class="w-full max-w-3xl">
+        <div class="mb-12 font-mono text-sm text-muted">
+          <span class="text-wave-high">$</span> echo $CONTACT_INFO
+        </div>
+
+        <h2 class="text-4xl md:text-5xl font-bold text-light mb-8">
+          Let's <span class="text-gradient-wave">Survive</span> Together
+        </h2>
+
+        <p class="text-xl text-muted mb-12">
+          一緒に生き延びよう。
+        </p>
+
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="https://twitter.com/Hassanulzain"
+            target="_blank"
+            class="flex items-center gap-3 px-6 py-4 glass rounded-xl hover:border-wave-high/50 transition-all group"
+          >
+            <span class="text-2xl">𝕏</span>
+            <span class="text-light group-hover:text-wave-high transition-colors">@Hassanulzain</span>
+          </a>
+
+          <a
+            href="https://note.com/zain14"
+            target="_blank"
+            class="flex items-center gap-3 px-6 py-4 glass rounded-xl hover:border-wave-low/50 transition-all group"
+          >
+            <span class="text-2xl">📝</span>
+            <span class="text-light group-hover:text-wave-low transition-colors">note</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-6 md:px-12 lg:px-24 py-12 border-t border-surface">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-muted text-sm font-mono">
+          <span class="text-wave-high">©</span> 2025 ZAIN. All rights reserved.
+        </p>
+        <p class="text-muted text-sm italic">
+          Pura Vida 🌊
+        </p>
+      </div>
+    </footer>
+
+    <!-- Mood Slider (hidden, for demo) -->
+    <div class="fixed bottom-6 right-6 glass rounded-xl p-4 z-50">
+      <label class="text-xs text-muted block mb-2">Mood Wave</label>
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value="50"
+        class="w-32 accent-wave-high"
+        x-model="mood"
+        @input="updateMood($event.target.value)"
+      >
+    </div>
+
+  </main>
+</Layout>
+
+<script>
+  import { SurvivalWave } from '../scripts/webgl/SurvivalWave';
+
+  // Alpine.js app
+  document.addEventListener('alpine:init', () => {
+    // @ts-ignore
+    Alpine.data('survivalApp', () => ({
+      mood: 50,
+      wave: null as SurvivalWave | null,
+
+      init() {
+        const container = document.getElementById('webgl-container');
+        if (container) {
+          this.wave = new SurvivalWave({
+            container,
+            particleCount: 80
+          });
+          this.wave.mount();
+        }
+      },
+
+      updateMood(value: string) {
+        const normalizedMood = parseInt(value) / 100;
+        if (this.wave) {
+          this.wave.setMood(normalizedMood);
+        }
+      }
+    }));
+  });
+</script>
