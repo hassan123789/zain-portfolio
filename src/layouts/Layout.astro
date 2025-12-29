@@ -20,6 +20,17 @@ const {
   <meta name="description" content={description} />
   <title>{title}</title>
 
+  <!-- OG Tags -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@Hassanulzain" />
+
+  <!-- Performance -->
+  <meta name="theme-color" content="#050508" />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,5 +41,21 @@ const {
 </head>
 <body class="bg-void text-light font-mono antialiased overflow-x-hidden">
   <slot />
+
+  <!-- Page transition -->
+  <script>
+    document.addEventListener('click', (e) => {
+      const link = (e.target as HTMLElement).closest('a[href^="http"]');
+      if (link && !link.getAttribute('href')?.includes(location.hostname)) {
+        e.preventDefault();
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+          window.open(link.getAttribute('href') || '', '_blank');
+          document.body.style.opacity = '1';
+        }, 300);
+      }
+    });
+  </script>
 </body>
 </html>
