@@ -1,4 +1,4 @@
-// Wave Vertex Shader - The rhythm of survival
+// Wave Vertex Shader - 嵐から凪へ / From Storm to Calm
 precision highp float;
 precision highp int;
 
@@ -8,7 +8,8 @@ attribute vec2 uv;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 uniform float uTime;
-uniform float uMood; // 0 = low (depressive), 1 = high (manic)
+uniform float uMood; // 0 = calm (凪), 1 = storm (嵐)
+uniform float uStormIntensity; // 嵐の激しさ
 uniform vec2 uMouse;
 
 varying vec2 vUv;
@@ -87,25 +88,30 @@ void main() {
 
   vec3 pos = position;
 
-  // Organic wave motion - breathing like the ocean
-  float frequency = mix(0.6, 1.0, uMood);
-  float amplitude = mix(0.2, 0.5, uMood);
-  float speed = mix(0.12, 0.3, uMood);
+  // 嵐から凪へ - Storm to Calm
+  float stormFactor = uStormIntensity;
+  float calmFactor = 1.0 - stormFactor;
 
-  // Layered waves - deep, medium, surface
-  float wave1 = snoise(vec3(pos.x * frequency * 0.7, pos.y * frequency * 0.7, uTime * speed)) * 1.0;
-  float wave2 = snoise(vec3(pos.x * frequency * 1.3, pos.y * frequency * 1.3, uTime * speed * 1.3)) * 0.4;
-  float wave3 = snoise(vec3(pos.x * frequency * 2.0, pos.y * frequency * 2.0, uTime * speed * 1.8)) * 0.2;
+  // 嵐: 激しく混沌とした波
+  // 凪: 青空が反射した鏡のような海 - 波一つ立たない
+  float frequency = mix(0.15, 1.5, stormFactor);
+  float amplitude = mix(0.008, 0.7, stormFactor);  // 凪ではほぼ平ら
+  float speed = mix(0.02, 0.5, stormFactor);       // 凪ではとてもゆっくり
 
-  // Mouse creates a gentle disturbance that ripples outward
+  // 嵐の層 - 複数の乱れた波
+  float wave1 = snoise(vec3(pos.x * frequency, pos.y * frequency, uTime * speed)) * 1.0;
+  float wave2 = snoise(vec3(pos.x * frequency * 1.7, pos.y * frequency * 1.7, uTime * speed * 1.5)) * 0.5 * stormFactor;
+  float wave3 = snoise(vec3(pos.x * frequency * 3.0, pos.y * frequency * 3.0, uTime * speed * 2.5)) * 0.3 * stormFactor;
+
+  // 嵐の時だけ追加の乱れ
+  float chaos = snoise(vec3(pos.x * 4.0, pos.y * 4.0, uTime * 0.8)) * 0.25 * stormFactor * stormFactor;
+
+  // マウスの影響 - 凪ではほとんど影響なし
   float distToMouse = length(uv - uMouse);
-  float mouseInfluence = exp(-distToMouse * 2.0);
-  float ripple = sin(distToMouse * 12.0 - uTime * 3.0) * mouseInfluence * 0.5;
+  float mouseInfluence = exp(-distToMouse * mix(5.0, 1.5, stormFactor)) * stormFactor;
+  float ripple = sin(distToMouse * mix(6.0, 15.0, stormFactor) - uTime * mix(1.0, 4.0, stormFactor)) * mouseInfluence * mix(0.02, 0.6, stormFactor);
 
-  // Subtle turbulence follows the cursor
-  float cursorTurbulence = snoise(vec3(pos.x * 2.5, pos.y * 2.5, uTime * 1.5)) * mouseInfluence * 0.3;
-
-  float elevation = (wave1 + wave2 + wave3) * amplitude + ripple + cursorTurbulence;
+  float elevation = (wave1 + wave2 + wave3 + chaos) * amplitude + ripple;
   pos.z += elevation;
 
   vElevation = elevation;

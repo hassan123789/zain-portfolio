@@ -1,21 +1,29 @@
-// Particle Fragment Shader
+// Particle Fragment Shader - 嵐の塵、凪の光
 precision highp float;
 precision highp int;
 
 uniform float uTime;
 uniform float uMood;
 uniform float uOpacity;
+uniform float uStormIntensity;
 
 varying float vAlpha;
 varying float vIndex;
 
-// Vivid emotional colors
-vec3 colorWaveHigh = vec3(0.0, 0.9, 1.0);
-vec3 colorWaveLow = vec3(0.55, 0.36, 0.96);
-vec3 colorPulse = vec3(1.0, 0.18, 0.34);
-vec3 colorLife = vec3(0.0, 0.85, 0.63);
+// 嵐の色
+vec3 stormCyan = vec3(0.0, 0.8, 1.0);
+vec3 stormPurple = vec3(0.6, 0.25, 0.95);
+vec3 stormPink = vec3(1.0, 0.2, 0.4);
+vec3 stormYellow = vec3(1.0, 0.8, 0.2);
+
+// 凪の色 - 晴れ渡った光
+vec3 calmLight = vec3(0.75, 0.95, 1.0);
+vec3 calmMint = vec3(0.65, 0.92, 0.88);
 
 void main() {
+  float storm = uStormIntensity;
+  float calm = 1.0 - storm;
+
   // Circular particle shape
   vec2 center = gl_PointCoord - 0.5;
   float dist = length(center);
@@ -25,27 +33,36 @@ void main() {
   // Soft edges
   float alpha = 1.0 - smoothstep(0.3, 0.5, dist);
 
-  // Color based on index (cycling through palette)
+  // 嵐の色（激しく多彩）
   float colorIndex = mod(vIndex, 4.0);
-  vec3 color;
-
+  vec3 stormColor;
   if (colorIndex < 1.0) {
-    color = colorWaveHigh;
+    stormColor = stormCyan;
   } else if (colorIndex < 2.0) {
-    color = colorWaveLow;
+    stormColor = stormPurple;
   } else if (colorIndex < 3.0) {
-    color = colorPulse;
+    stormColor = stormPink;
   } else {
-    color = colorLife;
+    stormColor = stormYellow;
   }
 
-  // Mood affects color intensity
-  color = mix(color * 0.5, color, uMood);
+  // 凪の色（澄んだ明るい光）
+  vec3 calmColor = mix(calmMint, calmLight, sin(vIndex * 0.3) * 0.5 + 0.5);
 
-  // Gentle pulsing
-  float pulse = sin(uTime * 1.2 + vIndex * 0.5) * 0.35 + 0.65;
+  // ブレンド
+  vec3 color = mix(calmColor, stormColor, storm);
+
+  // 嵐: 激しいパルス / 凪: 穏やかな呼吸
+  float pulseSpeed = mix(0.5, 1.5, storm);
+  float pulseAmount = mix(0.15, 0.4, storm);
+  float pulse = sin(uTime * pulseSpeed + vIndex * 0.5) * pulseAmount + (1.0 - pulseAmount);
   alpha *= pulse;
 
-  // Soft glow effect
-  gl_FragColor = vec4(color * 1.2, alpha * vAlpha * uOpacity * 0.7);
+  // 凪では柔らかく輝く
+  float glowBoost = mix(1.3, 1.0, storm);
+
+  // 凪では穏やかに漂う光の粒
+  float calmAlpha = mix(0.5, 0.8, storm);
+
+  gl_FragColor = vec4(color * glowBoost, alpha * vAlpha * uOpacity * calmAlpha);
 }

@@ -1,43 +1,68 @@
-// Wave Fragment Shader - Colors of the soul
+// Wave Fragment Shader - 嵐から凪へ / Storm to Calm
 precision highp float;
 precision highp int;
 
 uniform float uTime;
 uniform float uMood;
 uniform float uOpacity;
+uniform float uStormIntensity;
 
 varying vec2 vUv;
 varying float vElevation;
 varying float vMood;
 
-// Color palette - vivid emotional spectrum
-vec3 colorVoid = vec3(0.02, 0.02, 0.03);
-vec3 colorWaveHigh = vec3(0.0, 0.9, 1.0);   // Electric cyan
-vec3 colorWaveLow = vec3(0.55, 0.36, 0.96);  // Vivid purple
-vec3 colorPulse = vec3(1.0, 0.18, 0.34);     // Neon pink
+// 嵐の色 - 激しく混沌とした
+vec3 stormDark = vec3(0.05, 0.02, 0.08);
+vec3 stormCyan = vec3(0.0, 0.7, 0.9);
+vec3 stormPurple = vec3(0.6, 0.2, 0.9);
+vec3 stormPink = vec3(1.0, 0.15, 0.35);
+
+// 凪の色 - 嵐が過ぎて、世界がふっと明るくなる
+vec3 openSky = vec3(0.55, 0.82, 0.98);     // 晴れ渡った空
+vec3 clearLight = vec3(0.85, 0.95, 1.0);   // 澄んだ光
+vec3 softMint = vec3(0.6, 0.9, 0.85);      // 柔らかいミント
+vec3 breathe = vec3(0.75, 0.92, 0.98);     // 深呼吸できる色
 
 void main() {
-  // Base color shifts with mood
-  vec3 baseColor = mix(colorWaveLow, colorWaveHigh, vMood);
+  float storm = uStormIntensity;
+  float calm = 1.0 - storm;
+
+  // 嵐の色合い
+  vec3 stormBase = mix(stormPurple, stormCyan, vMood);
+  vec3 stormPeak = mix(stormBase, stormPink, smoothstep(0.3, 0.7, vElevation));
+
+// 凪の色合い - パーっと晴れた、澄んだ世界
+  float spread = smoothstep(0.0, 1.0, vUv.y);
+  vec3 calmBase = mix(softMint, openSky, spread * 0.6 + 0.3);
+
+  // 中央が最も明るい - 開放感
+  float centerGlow = 1.0 - length(vUv - 0.5) * 1.2;
+  centerGlow = max(0.0, centerGlow);
+  calmBase = mix(calmBase, clearLight, centerGlow * 0.5);
+
+  // ほんの少しの揺らぎ
+  float gentle = smoothstep(-0.01, 0.01, vElevation);
+  vec3 calmGlow = mix(calmBase, breathe, gentle * 0.25);
+
+  // 嵐と凪をブレンド
+  vec3 baseColor = mix(calmGlow, stormPeak, storm);
 
   // Elevation affects brightness
   float brightness = smoothstep(-0.5, 0.5, vElevation);
 
-  // Add pulse color at peaks
-  vec3 peakColor = mix(baseColor, colorPulse, smoothstep(0.3, 0.6, vElevation));
+  // Edge glow - 凪ではソフトなフェード
+  float edgeFade = smoothstep(0.0, mix(0.4, 0.3, storm), vUv.x) * smoothstep(1.0, mix(0.6, 0.7, storm), vUv.x);
+  edgeFade *= smoothstep(0.0, mix(0.4, 0.3, storm), vUv.y) * smoothstep(1.0, mix(0.6, 0.7, storm), vUv.y);
 
-  // Edge glow
-  float edgeFade = smoothstep(0.0, 0.3, vUv.x) * smoothstep(1.0, 0.7, vUv.x);
-  edgeFade *= smoothstep(0.0, 0.3, vUv.y) * smoothstep(1.0, 0.7, vUv.y);
+// 嵐: 激しいコントラスト / 凪: ふっと明るくなる
+  vec3 darkBase = mix(softMint * 0.7, stormDark, storm);
+  vec3 finalColor = mix(darkBase, baseColor, brightness * mix(0.4, 0.8, storm) + mix(0.55, 0.15, storm));
 
-  // Final color - rich gradients with glow
-  vec3 finalColor = mix(colorVoid, peakColor, brightness * 0.7 + 0.15);
+  // 凪の時は全体が澄んで明るい
+  finalColor += clearLight * calm * 0.2;
 
-  // Subtle chromatic accent
-  finalColor += vec3(vUv.x * 0.04, vUv.y * 0.01, vUv.y * 0.05);
-
-  // Opacity - visible waves with soft edges
-  float alpha = uOpacity * edgeFade * (0.4 + brightness * 0.4);
+  // 凪ではより見える、明るく澄んだ
+  float alpha = uOpacity * edgeFade * (mix(0.85, 0.35, storm) + brightness * mix(0.12, 0.45, storm));
 
   gl_FragColor = vec4(finalColor, alpha);
 }
