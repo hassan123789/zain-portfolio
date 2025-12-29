@@ -87,23 +87,23 @@ void main() {
 
   vec3 pos = position;
 
-  // Wave frequency changes with mood - more gentle base movement
-  float frequency = mix(0.5, 1.2, uMood);
-  float amplitude = mix(0.15, 0.4, uMood);
-  float speed = mix(0.15, 0.4, uMood);
+  // Organic wave motion - breathing like the ocean
+  float frequency = mix(0.6, 1.0, uMood);
+  float amplitude = mix(0.2, 0.5, uMood);
+  float speed = mix(0.12, 0.3, uMood);
 
-  // Multiple wave layers - reduced intensity for calmer effect
-  float wave1 = snoise(vec3(pos.x * frequency, pos.y * frequency, uTime * speed));
-  float wave2 = snoise(vec3(pos.x * frequency * 1.5, pos.y * frequency * 1.5, uTime * speed * 1.2)) * 0.3;
-  float wave3 = snoise(vec3(pos.x * frequency * 2.5, pos.y * frequency * 2.5, uTime * speed * 1.5)) * 0.15;
+  // Layered waves - deep, medium, surface
+  float wave1 = snoise(vec3(pos.x * frequency * 0.7, pos.y * frequency * 0.7, uTime * speed)) * 1.0;
+  float wave2 = snoise(vec3(pos.x * frequency * 1.3, pos.y * frequency * 1.3, uTime * speed * 1.3)) * 0.4;
+  float wave3 = snoise(vec3(pos.x * frequency * 2.0, pos.y * frequency * 2.0, uTime * speed * 1.8)) * 0.2;
 
-  // Mouse interaction - stronger ripple effect near cursor
+  // Mouse creates a gentle disturbance that ripples outward
   float distToMouse = length(uv - uMouse);
-  float mouseInfluence = exp(-distToMouse * 2.5);  // Wider influence area
-  float ripple = sin(distToMouse * 15.0 - uTime * 4.0) * mouseInfluence * 0.4;
+  float mouseInfluence = exp(-distToMouse * 2.0);
+  float ripple = sin(distToMouse * 12.0 - uTime * 3.0) * mouseInfluence * 0.5;
 
-  // Extra turbulence near cursor
-  float cursorTurbulence = snoise(vec3(pos.x * 3.0, pos.y * 3.0, uTime * 2.0)) * mouseInfluence * 0.25;
+  // Subtle turbulence follows the cursor
+  float cursorTurbulence = snoise(vec3(pos.x * 2.5, pos.y * 2.5, uTime * 1.5)) * mouseInfluence * 0.3;
 
   float elevation = (wave1 + wave2 + wave3) * amplitude + ripple + cursorTurbulence;
   pos.z += elevation;

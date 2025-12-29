@@ -2,18 +2,18 @@
 
 /* Custom Theme */
 @theme {
-  /* Colors - Based on survival/wave concept */
-  --color-void: #0a0a0f;
-  --color-deep: #12121a;
-  --color-surface: #1a1a24;
-  --color-light: #e8e8f0;
-  --color-muted: #6b6b7a;
+  /* Colors - Deep ocean of survival */
+  --color-void: #050508;
+  --color-deep: #0a0a12;
+  --color-surface: #14141f;
+  --color-light: #f0f0f8;
+  --color-muted: #8888a0;
 
-  /* Accent colors - dual states (manic/depressive) */
-  --color-wave-high: #00d4ff;
-  --color-wave-low: #7c3aed;
-  --color-pulse: #ff3366;
-  --color-life: #10b981;
+  /* Accent colors - emotional spectrum */
+  --color-wave-high: #00e5ff;   /* Electric cyan - clarity */
+  --color-wave-low: #8b5cf6;    /* Vivid purple - depth */
+  --color-pulse: #ff2d55;       /* Neon pink - intensity */
+  --color-life: #00d9a0;        /* Jade - hope */
 
   /* Typography */
   --font-mono: 'JetBrains Mono', 'Consolas', monospace;
@@ -61,6 +61,26 @@
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.5; }
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  animation: fade-in 1s ease-out 1.5s both;
+}
+
+.scroll-arrow {
+  animation: scroll-bounce 2s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Base styles */
@@ -153,11 +173,18 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Glass morphism */
+/* Glass morphism - enhanced */
 .glass {
-  background: rgba(26, 26, 36, 0.6);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(232, 232, 240, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(20, 20, 31, 0.8) 0%,
+    rgba(10, 10, 18, 0.6) 100%
+  );
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 /* Content sections - subtle background for readability */
@@ -173,25 +200,46 @@ section > div:first-child {
 /* Backdrop for content areas */
 .content-backdrop {
   background: radial-gradient(
-    ellipse 80% 60% at 50% 50%,
-    rgba(10, 10, 15, 0.85) 0%,
-    rgba(10, 10, 15, 0.5) 50%,
+    ellipse 100% 80% at 50% 50%,
+    rgba(5, 5, 8, 0.9) 0%,
+    rgba(5, 5, 8, 0.6) 40%,
+    rgba(5, 5, 8, 0.2) 70%,
     transparent 100%
   );
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  position: relative;
+}
+
+.content-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 229, 255, 0.1) 0%,
+    transparent 50%,
+    rgba(139, 92, 246, 0.1) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Terminal sections - cleaner look */
+.terminal-section .terminal-content {
+  background: rgba(5, 5, 10, 0.8);
+  backdrop-filter: blur(16px);
   padding: 2rem;
   border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-/* Terminal sections get darker backdrop */
-.terminal-section .terminal-content {
-  background: rgba(10, 10, 15, 0.75);
-  backdrop-filter: blur(12px);
-  padding: 2rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(232, 232, 240, 0.05);
-}
-
-/* Noise overlay */
+/* Noise overlay - subtle film grain */
 .noise::before {
   content: '';
   position: fixed;
