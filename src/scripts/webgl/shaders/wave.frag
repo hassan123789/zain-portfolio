@@ -17,11 +17,11 @@ vec3 stormCyan = vec3(0.0, 0.7, 0.9);
 vec3 stormPurple = vec3(0.6, 0.2, 0.9);
 vec3 stormPink = vec3(1.0, 0.15, 0.35);
 
-// 凪の色 - 嵐が過ぎて、世界がふっと明るくなる
-vec3 openSky = vec3(0.55, 0.82, 0.98);     // 晴れ渡った空
-vec3 clearLight = vec3(0.85, 0.95, 1.0);   // 澄んだ光
-vec3 softMint = vec3(0.6, 0.9, 0.85);      // 柔らかいミント
-vec3 breathe = vec3(0.75, 0.92, 0.98);     // 深呼吸できる色
+// 凪の色 - 嵐が過ぎて、世界がふっと明るくなる（でも読みやすく）
+vec3 openSky = vec3(0.35, 0.55, 0.7);      // 落ち着いた空色
+vec3 clearLight = vec3(0.5, 0.65, 0.75);   // 柔らかい光
+vec3 softMint = vec3(0.3, 0.5, 0.55);      // 落ち着いたミント
+vec3 breathe = vec3(0.4, 0.6, 0.7);        // 深呼吸できる色
 
 void main() {
   float storm = uStormIntensity;
@@ -54,15 +54,15 @@ void main() {
   float edgeFade = smoothstep(0.0, mix(0.4, 0.3, storm), vUv.x) * smoothstep(1.0, mix(0.6, 0.7, storm), vUv.x);
   edgeFade *= smoothstep(0.0, mix(0.4, 0.3, storm), vUv.y) * smoothstep(1.0, mix(0.6, 0.7, storm), vUv.y);
 
-// 嵐: 激しいコントラスト / 凪: ふっと明るくなる
-  vec3 darkBase = mix(softMint * 0.7, stormDark, storm);
-  vec3 finalColor = mix(darkBase, baseColor, brightness * mix(0.4, 0.8, storm) + mix(0.55, 0.15, storm));
+// 嵐: 激しいコントラスト / 凪: ふっと明るくなる（でも控えめに）
+  vec3 darkBase = mix(softMint * 0.4, stormDark, storm);
+  vec3 finalColor = mix(darkBase, baseColor, brightness * mix(0.35, 0.8, storm) + mix(0.45, 0.15, storm));
 
-  // 凪の時は全体が澄んで明るい
-  finalColor += clearLight * calm * 0.2;
+  // 凪の時は全体が澄んで明るい（控えめに）
+  finalColor += clearLight * calm * 0.1;
 
-  // 凪ではより見える、明るく澄んだ
-  float alpha = uOpacity * edgeFade * (mix(0.85, 0.35, storm) + brightness * mix(0.12, 0.45, storm));
+  // 凪ではより見える、でも文字の邪魔をしない透明度
+  float alpha = uOpacity * edgeFade * (mix(0.6, 0.35, storm) + brightness * mix(0.15, 0.45, storm));
 
   gl_FragColor = vec4(finalColor, alpha);
 }

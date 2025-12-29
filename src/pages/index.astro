@@ -9,6 +9,26 @@ import Layout from '../layouts/Layout.astro';
   <!-- Noise Overlay -->
   <div class="noise pointer-events-none"></div>
 
+  <!-- Navigation - 常に見えるシンプルなナビ -->
+  <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="#hero" class="font-bold text-light hover:text-wave-high transition-colors">
+        ZAIN
+      </a>
+      <div class="hidden md:flex items-center gap-6 text-sm font-mono">
+        <a href="#about" class="text-muted hover:text-light transition-colors">about</a>
+        <a href="#skills" class="text-muted hover:text-light transition-colors">skills</a>
+        <a href="#work" class="text-muted hover:text-light transition-colors">work</a>
+        <a href="#contact" class="text-wave-high hover:text-life transition-colors">contact</a>
+      </div>
+      <!-- モバイルメニュー -->
+      <div class="md:hidden flex gap-4 text-sm">
+        <a href="#work" class="text-muted">work</a>
+        <a href="#contact" class="text-wave-high">contact</a>
+      </div>
+    </div>
+  </nav>
+
   <!-- Main Content -->
   <main class="relative min-h-screen" x-data="survivalApp()">
 
@@ -101,6 +121,11 @@ import Layout from '../layouts/Layout.astro';
             "私の人生は「普通」じゃない。<br>
             だから書く。私にしか書けないことを。"
           </blockquote>
+
+          <!-- 次のセクションへの導入 -->
+          <p class="text-muted pt-4">
+            この背景から、私はエンジニアとしても独自の視点を持っている。
+          </p>
         </div>
       </div>
     </section>
@@ -161,11 +186,41 @@ import Layout from '../layouts/Layout.astro';
             </div>
           </div>
         </div>
+
+        <!-- Stats - スキル内に統合 -->
+        <div class="mt-16 pt-12 border-t border-white/10">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6" data-reveal="stagger">
+            <div class="text-center" data-magnetic="0.15">
+              <div class="text-3xl font-bold text-wave-high mb-1">
+                <span data-counter="24" data-counter-suffix="歳">0歳</span>
+              </div>
+              <div class="text-muted text-xs">Age</div>
+            </div>
+            <div class="text-center" data-magnetic="0.15">
+              <div class="text-3xl font-bold text-wave-low mb-1">
+                <span data-counter="20" data-counter-suffix="年">0年</span>
+              </div>
+              <div class="text-muted text-xs">In Japan</div>
+            </div>
+            <div class="text-center" data-magnetic="0.15">
+              <div class="text-3xl font-bold text-pulse mb-1">
+                <span data-counter="1" data-counter-suffix="年目">0年目</span>
+              </div>
+              <div class="text-muted text-xs">Freelance</div>
+            </div>
+            <div class="text-center" data-magnetic="0.15">
+              <div class="text-3xl font-bold text-life mb-1">
+                <span data-counter="100" data-counter-suffix="%">0%</span>
+              </div>
+              <div class="text-muted text-xs">Survival</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Articles Section -->
-    <section id="articles" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24">
+    <!-- Articles Section - work - work -->
+    <section id="work" class="min-h-screen flex items-center px-6 md:px-12 lg:px-24 py-24">
       <div class="w-full max-w-4xl content-backdrop">
         <div class="mb-12 font-mono text-sm text-muted">
           <span class="text-wave-high">$</span> tail -f articles.log
@@ -244,138 +299,72 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
 
-    <!-- Stats Section -->
-    <section id="stats" class="py-24 px-6 md:px-12 lg:px-24">
-      <div class="max-w-6xl mx-auto content-backdrop">
-        <div class="mb-12 font-mono text-sm text-muted terminal-header">
-          <span class="text-wave-high">$</span> <span data-typing data-typing-text="cat stats.json | jq" data-typing-speed="60" data-typing-delay="2000"></span>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8" data-reveal="stagger">
-          <!-- Stat 1 -->
-          <div class="text-center glass rounded-xl p-6" data-magnetic="0.15">
-            <div class="text-4xl md:text-5xl font-bold text-wave-high mb-2">
-              <span data-counter="24" data-counter-suffix="歳">0歳</span>
-            </div>
-            <div class="text-muted text-sm">Age</div>
-          </div>
-
-          <!-- Stat 2 -->
-          <div class="text-center glass rounded-xl p-6" data-magnetic="0.15">
-            <div class="text-4xl md:text-5xl font-bold text-wave-low mb-2">
-              <span data-counter="20" data-counter-suffix="年">0年</span>
-            </div>
-            <div class="text-muted text-sm">In Japan</div>
-          </div>
-
-          <!-- Stat 3 -->
-          <div class="text-center glass rounded-xl p-6" data-magnetic="0.15">
-            <div class="text-4xl md:text-5xl font-bold text-pulse mb-2">
-              <span data-counter="1" data-counter-suffix="年目">0年目</span>
-            </div>
-            <div class="text-muted text-sm">Freelance</div>
-          </div>
-
-          <!-- Stat 4 -->
-          <div class="text-center glass rounded-xl p-6" data-magnetic="0.15">
-            <div class="text-4xl md:text-5xl font-bold text-life mb-2">
-              <span data-counter="100" data-counter-suffix="%">0%</span>
-            </div>
-            <div class="text-muted text-sm">Survival Rate</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Contact Section - 凪 / The Calm -->
     <section id="contact" class="min-h-screen flex items-center justify-center px-6 md:px-12 lg:px-24 py-24">
       <div class="w-full max-w-4xl text-center">
-        <!-- 凪の瞬間 -->
-        <div class="mb-12">
-          <span class="inline-block px-6 py-3 text-sm font-mono text-life border border-life/30 rounded-full bg-life/5">
+        <!-- 凪のマーカー -->
+        <div class="mb-16">
+          <span class="inline-block px-6 py-3 text-sm font-mono text-life/80 border border-life/20 rounded-full">
             凪 — The Calm
           </span>
         </div>
 
-        <!-- 哲学 - 大きく中央に -->
-        <div class="mb-16">
-          <p class="text-4xl md:text-6xl lg:text-7xl font-light text-light leading-tight mb-8">
-            <span class="text-wave-high">Action</span>
-            <span class="text-muted mx-2">=</span>
-            <span class="text-wave-low">f</span>
-            <span class="text-muted">(</span><span class="text-pulse">Survival</span><span class="text-muted">)</span>
+        <!-- 哲学 - シンプルに中央に -->
+        <div class="mb-20">
+          <p class="text-5xl md:text-7xl lg:text-8xl font-light text-light/90 tracking-tight mb-4">
+            <span class="text-wave-high/80">Action</span>
+            <span class="text-muted/60 mx-3">=</span>
+            <span class="text-wave-low/80">f</span><span class="text-muted/60">(</span><span class="text-pulse/80">S</span><span class="text-muted/60">)</span>
           </p>
-          <p class="text-xl md:text-2xl text-muted/80 font-light">
-            of Identity
-          </p>
-        </div>
-
-        <!-- ストーリー -->
-        <div class="max-w-2xl mx-auto mb-16 space-y-4">
-          <p class="text-lg text-muted leading-relaxed">
-            嵐の中を生き延びた。
-          </p>
-          <p class="text-lg text-muted leading-relaxed">
-            アイデンティティを守る戦いだった。
-          </p>
-          <p class="text-xl text-light leading-relaxed">
-            この式を見出した時、凪が訪れた。
+          <p class="text-lg md:text-xl text-muted/60 font-light tracking-widest">
+            Survival of Identity
           </p>
         </div>
 
-        <!-- CTA -->
-        <div class="mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-light mb-4">
-            Let's <span class="text-life">Survive</span> Together
-          </h2>
-          <p class="text-muted">
-            私のストーリーはnoteに。一緒に何か面白いものを作ろう。
-          </p>
-        </div>
+        <!-- 一言だけ -->
+        <p class="text-xl md:text-2xl text-light/70 font-light mb-20 max-w-xl mx-auto leading-relaxed">
+          嵐を抜けた先に、この式を見つけた。
+        </p>
 
+        <!-- CTA - シンプルに -->
         <div class="flex flex-wrap justify-center gap-4">
           <a
             href="https://note.com/zain14"
             target="_blank"
-            class="flex items-center gap-3 px-8 py-4 glass rounded-xl hover:border-life/50 transition-all group border border-life/30"
+            class="flex items-center gap-3 px-8 py-4 rounded-xl bg-life/10 border border-life/30 hover:bg-life/20 transition-all group"
           >
-            <span class="text-2xl">📝</span>
-            <span class="text-light group-hover:text-life transition-colors">note - 私のストーリー</span>
+            <span class="text-xl">📝</span>
+            <span class="text-light group-hover:text-life transition-colors">Story on note</span>
           </a>
 
           <a
             href="https://twitter.com/Hassanulzain"
             target="_blank"
-            class="flex items-center gap-3 px-8 py-4 glass rounded-xl hover:border-wave-high/50 transition-all group"
+            class="flex items-center gap-3 px-8 py-4 rounded-xl border border-white/10 hover:border-wave-high/30 transition-all group"
           >
-            <span class="text-2xl">𝕏</span>
-            <span class="text-light group-hover:text-wave-high transition-colors">@Hassanulzain</span>
+            <span class="text-xl">𝕏</span>
+            <span class="text-light/70 group-hover:text-wave-high transition-colors">@Hassanulzain</span>
+          </a>
+
+          <a
+            href="mailto:contact@example.com"
+            class="flex items-center gap-3 px-8 py-4 rounded-xl border border-white/10 hover:border-wave-low/30 transition-all group"
+          >
+            <span class="text-xl">✉️</span>
+            <span class="text-light/70 group-hover:text-wave-low transition-colors">Mail</span>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="px-6 md:px-12 lg:px-24 py-16 border-t border-white/5">
-      <div class="max-w-6xl mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div class="text-center md:text-left">
-            <p class="text-light font-bold text-lg mb-1">ZAIN</p>
-            <p class="text-muted text-sm font-mono">
-              <span class="text-wave-high">Action</span> = f(<span class="text-pulse">Survival</span>)
-            </p>
-          </div>
-          <div class="flex items-center gap-2 text-2xl">
-            <span class="text-wave-high">🌊</span>
-            <span class="text-wave-low">💜</span>
-            <span class="text-pulse">🔥</span>
-            <span class="text-life">✨</span>
-          </div>
-          <div class="text-center md:text-right">
-            <p class="text-muted text-sm">© 2025 ZAIN</p>
-            <p class="text-life text-sm font-medium">Pura Vida</p>
-          </div>
-        </div>
+    <!-- Footer - シンプルに -->
+    <footer class="px-6 md:px-12 lg:px-24 py-12 border-t border-white/5">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-muted text-sm font-mono">
+          <span class="text-wave-high">ZAIN</span> — Action = f(Survival)
+        </p>
+        <p class="text-life text-sm">Pura Vida ✨</p>
+        <p class="text-muted/50 text-xs">© 2025</p>
       </div>
     </footer>
 
