@@ -1,0 +1,292 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="ZAIN | 3D Relief" description="インタラクティブな3Dリリーフ - マウスで光を照らす">
+  <!-- Back Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="/" class="font-bold text-light hover:text-wave-high transition-colors flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        <span class="hidden md:inline">Back to Home</span>
+        <span class="md:hidden">ZAIN</span>
+      </a>
+      <div class="text-sm text-muted font-mono">
+        <span class="text-wave-high">3D</span> Relief Experience
+      </div>
+    </div>
+  </nav>
+
+  <!-- 3D Canvas Container -->
+  <div id="relief-container" class="fixed inset-0 bg-void"></div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="fixed inset-0 bg-void z-40 flex items-center justify-center">
+    <div class="text-center">
+      <div class="w-12 h-12 border-2 border-wave-high border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p class="text-muted font-mono text-sm">Loading 3D Relief...</p>
+    </div>
+  </div>
+
+  <!-- Instructions Overlay -->
+  <div id="instructions" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-30 text-center opacity-0 transition-opacity duration-1000">
+    <p class="text-muted text-sm font-mono">
+      <span class="text-wave-high">●</span> Move your mouse to reveal the relief
+    </p>
+  </div>
+
+  <!-- Info Panel -->
+  <div class="fixed bottom-8 right-8 z-30 text-right hidden md:block">
+    <p class="text-muted text-xs font-mono mb-1">Interactive 3D Relief</p>
+    <p class="text-muted/50 text-xs font-mono">Generated with TRELLIS AI</p>
+  </div>
+
+  <script>
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    class ReliefScene {
+      private scene: THREE.Scene;
+      private camera: THREE.PerspectiveCamera;
+      private renderer: THREE.WebGLRenderer;
+      private controls: OrbitControls;
+      private model: THREE.Group | null = null;
+      private spotLight: THREE.SpotLight;
+      private spotLightHelper: THREE.SpotLightHelper | null = null;
+      private mouse: THREE.Vector2 = new THREE.Vector2();
+      private targetMouse: THREE.Vector2 = new THREE.Vector2();
+      private clock: THREE.Clock;
+      private container: HTMLElement;
+
+      constructor() {
+        this.container = document.getElementById('relief-container')!;
+        this.clock = new THREE.Clock();
+
+        // Scene setup
+        this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(0x050508);
+        this.scene.fog = new THREE.Fog(0x050508, 5, 20);
+
+        // Camera
+        this.camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          100
+        );
+        this.camera.position.set(0, 0, 4);
+
+        // Renderer
+        this.renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance'
+        });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        this.renderer.toneMappingExposure = 1.2;
+        this.container.appendChild(this.renderer.domElement);
+
+        // Controls
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.enableDamping = true;
+        this.controls.dampingFactor = 0.05;
+        this.controls.minDistance = 2;
+        this.controls.maxDistance = 10;
+        this.controls.enablePan = false;
+
+        // Lighting - Immersive Garden style
+        this.setupLighting();
+
+        // Load model
+        this.loadModel();
+
+        // Events
+        this.setupEvents();
+
+        // Start animation
+        this.animate();
+      }
+
+      private setupLighting(): void {
+        // Ambient - very dim
+        const ambient = new THREE.AmbientLight(0x111122, 0.3);
+        this.scene.add(ambient);
+
+        // Main spotlight that follows mouse - Immersive Garden effect
+        this.spotLight = new THREE.SpotLight(0x00e5ff, 50);
+        this.spotLight.position.set(0, 0, 3);
+        this.spotLight.angle = Math.PI / 6;
+        this.spotLight.penumbra = 0.8;
+        this.spotLight.decay = 2;
+        this.spotLight.distance = 15;
+        this.spotLight.castShadow = true;
+        this.spotLight.shadow.mapSize.width = 1024;
+        this.spotLight.shadow.mapSize.height = 1024;
+        this.scene.add(this.spotLight);
+
+        // Secondary fill light
+        const fillLight = new THREE.PointLight(0x1a1a2e, 5);
+        fillLight.position.set(-5, 3, 2);
+        this.scene.add(fillLight);
+
+        // Subtle rim light
+        const rimLight = new THREE.PointLight(0x00e5ff, 2);
+        rimLight.position.set(5, -2, -3);
+        this.scene.add(rimLight);
+      }
+
+      private loadModel(): void {
+        const loader = new GLTFLoader();
+
+        loader.load(
+          '/sample.glb',
+          (gltf) => {
+            this.model = gltf.scene;
+
+            // Center and scale the model
+            const box = new THREE.Box3().setFromObject(this.model);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const scale = 2.5 / maxDim;
+
+            this.model.scale.setScalar(scale);
+            this.model.position.sub(center.multiplyScalar(scale));
+
+            // Apply materials for better look
+            this.model.traverse((child) => {
+              if (child instanceof THREE.Mesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+
+                // Enhance material
+                if (child.material) {
+                  const material = child.material as THREE.MeshStandardMaterial;
+                  material.roughness = 0.7;
+                  material.metalness = 0.3;
+                  material.envMapIntensity = 0.5;
+                }
+              }
+            });
+
+            this.scene.add(this.model);
+
+            // Target the spotlight at the model
+            this.spotLight.target = this.model;
+            this.scene.add(this.spotLight.target);
+
+            // Hide loading overlay
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+              loadingOverlay.style.opacity = '0';
+              loadingOverlay.style.transition = 'opacity 0.5s ease';
+              setTimeout(() => loadingOverlay.remove(), 500);
+            }
+
+            // Show instructions
+            const instructions = document.getElementById('instructions');
+            if (instructions) {
+              setTimeout(() => {
+                instructions.style.opacity = '1';
+                setTimeout(() => {
+                  instructions.style.opacity = '0';
+                }, 5000);
+              }, 1000);
+            }
+          },
+          (xhr) => {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+          },
+          (error) => {
+            console.error('Error loading model:', error);
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+              loadingOverlay.innerHTML = `
+                <div class="text-center">
+                  <p class="text-red-500 font-mono">Failed to load 3D model</p>
+                  <a href="/" class="text-wave-high hover:underline mt-4 inline-block">← Back to Home</a>
+                </div>
+              `;
+            }
+          }
+        );
+      }
+
+      private setupEvents(): void {
+        // Mouse move for spotlight
+        window.addEventListener('mousemove', (e) => {
+          this.targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+          this.targetMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Touch support
+        window.addEventListener('touchmove', (e) => {
+          if (e.touches.length > 0) {
+            this.targetMouse.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+            this.targetMouse.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+          }
+        });
+
+        // Resize
+        window.addEventListener('resize', () => {
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }
+
+      private animate(): void {
+        requestAnimationFrame(() => this.animate());
+
+        const delta = this.clock.getDelta();
+
+        // Smooth mouse following
+        this.mouse.x += (this.targetMouse.x - this.mouse.x) * 0.05;
+        this.mouse.y += (this.targetMouse.y - this.mouse.y) * 0.05;
+
+        // Update spotlight position based on mouse
+        this.spotLight.position.x = this.mouse.x * 3;
+        this.spotLight.position.y = this.mouse.y * 2;
+
+        // Subtle model rotation
+        if (this.model) {
+          this.model.rotation.y += delta * 0.1;
+        }
+
+        // Update controls
+        this.controls.update();
+
+        // Render
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      new ReliefScene();
+    });
+  </script>
+
+  <style>
+    #relief-container canvas {
+      display: block;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+  </style>
+</Layout>
