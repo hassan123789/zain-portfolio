@@ -1,0 +1,19 @@
+# Cloudflare Pages Configuration
+name = "zain-portfolio"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[site]
+bucket = "./dist"
+
+# Environment variables (optional)
+[vars]
+ENVIRONMENT = "production"
+
+# Custom headers for security and performance
+# [[headers]]
+# for = "/*"
+# [headers.values]
+#   X-Frame-Options = "DENY"
+#   X-Content-Type-Options = "nosniff"
+#   Referrer-Policy = "strict-origin-when-cross-origin"

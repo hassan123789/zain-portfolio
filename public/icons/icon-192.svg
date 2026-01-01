@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00e5ff"/>
+      <stop offset="50%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#ff2d55"/>
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="38" fill="#050508"/>
+  <text x="96" y="125" font-family="JetBrains Mono, Consolas, monospace" font-size="100" font-weight="bold" fill="url(#waveGrad)" text-anchor="middle">Z</text>
+  <path d="M30 145 Q55 125 96 145 T162 145" stroke="url(#waveGrad)" stroke-width="6" fill="none" opacity="0.6"/>
+</svg>

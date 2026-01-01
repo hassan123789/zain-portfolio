@@ -1,0 +1,102 @@
+---
+// SEO Component - 構造化データとメタタグ
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article" | "profile";
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = "ZAIN | Action = f(Survival of Identity)",
+  description = "パキスタン×日本×双極×エンジニア。どこにも属せなかった者の生存記録。Web Engineer / WebGL / AI / Writing",
+  image = "/og-image.png",
+  type = "website",
+  publishedTime,
+  modifiedTime,
+  author = "ZAIN",
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = new URL(image, Astro.site);
+
+// JSON-LD 構造化データ
+const jsonLD = {
+  "@context": "https://schema.org",
+  "@type": type === "profile" ? "Person" : "WebSite",
+  name: "ZAIN",
+  url: Astro.site?.toString(),
+  description,
+  author: {
+    "@type": "Person",
+    name: "ZAIN",
+    url: "https://note.com/zain14",
+    sameAs: [
+      "https://twitter.com/Hassanulzain",
+      "https://github.com/hassan123789",
+      "https://note.com/zain14"
+    ],
+    jobTitle: "Web Engineer",
+    knowsAbout: ["Web Development", "Three.js", "TypeScript", "React", "AI Image Generation"]
+  },
+  ...(type === "profile" && {
+    "@type": "Person",
+    givenName: "ZAIN",
+    nationality: ["Pakistan", "Japan"],
+    alumniOf: "Self-taught",
+  }),
+};
+---
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="author" content={author} />
+<link rel="canonical" href={canonicalURL} />
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="ja_JP" />
+<meta property="og:site_name" content="ZAIN Portfolio" />
+
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+<meta name="twitter:creator" content="@Hassanulzain" />
+<meta name="twitter:site" content="@Hassanulzain" />
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLD)} />
+
+<!-- Additional SEO -->
+<meta name="theme-color" content="#050508" />
+<meta name="color-scheme" content="dark" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="ZAIN" />
+
+<!-- Preconnect for performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />

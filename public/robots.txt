@@ -1,0 +1,13 @@
+# Robots.txt for ZAIN Portfolio
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://zain.dev/sitemap-index.xml
+
+# Crawl-delay (optional)
+Crawl-delay: 1
+
+# Disallow common non-content paths
+Disallow: /api/
+Disallow: /_astro/

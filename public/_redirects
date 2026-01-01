@@ -1,0 +1,9 @@
+# Cloudflare Pages Redirects
+# Format: /old-path /new-path [status-code]
+
+# Example redirects (uncomment as needed)
+# /old-page /new-page 301
+# /blog/* /articles/:splat 301
+
+# Trailing slash normalization
+# /about/ /about 301

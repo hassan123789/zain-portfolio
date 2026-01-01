@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#050508"/>
+      <stop offset="100%" style="stop-color:#0a0a12"/>
+    </linearGradient>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00e5ff"/>
+      <stop offset="50%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#ff2d55"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00e5ff"/>
+      <stop offset="33%" style="stop-color:#8b5cf6"/>
+      <stop offset="66%" style="stop-color:#ff2d55"/>
+      <stop offset="100%" style="stop-color:#00d9a0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Wave pattern background -->
+  <path d="M0 400 Q150 350 300 400 T600 400 T900 400 T1200 400 L1200 630 L0 630 Z" fill="url(#waveGrad)" opacity="0.1"/>
+  <path d="M0 450 Q150 400 300 450 T600 450 T900 450 T1200 450 L1200 630 L0 630 Z" fill="url(#waveGrad)" opacity="0.15"/>
+  <path d="M0 500 Q150 450 300 500 T600 500 T900 500 T1200 500 L1200 630 L0 630 Z" fill="url(#waveGrad)" opacity="0.2"/>
+
+  <!-- Name -->
+  <text x="100" y="200" font-family="JetBrains Mono, Consolas, monospace" font-size="120" font-weight="bold" fill="url(#textGrad)">ZAIN</text>
+
+  <!-- Philosophy -->
+  <text x="100" y="300" font-family="JetBrains Mono, monospace" font-size="36" fill="#f0f0f8">
+    <tspan fill="#00e5ff">Action</tspan>
+    <tspan fill="#8888a0"> = </tspan>
+    <tspan fill="#8b5cf6">f</tspan>
+    <tspan fill="#8888a0">(</tspan>
+    <tspan fill="#ff2d55">Survival of Identity</tspan>
+    <tspan fill="#8888a0">)</tspan>
+  </text>
+
+  <!-- Description -->
+  <text x="100" y="380" font-family="Noto Sans JP, sans-serif" font-size="28" fill="#8888a0">パキスタン×日本×双極×エンジニア</text>
+  <text x="100" y="420" font-family="Noto Sans JP, sans-serif" font-size="24" fill="#8888a0" font-style="italic">どこにも属せなかった者の生存記録</text>
+
+  <!-- Tags -->
+  <g transform="translate(100, 480)">
+    <rect x="0" y="0" width="160" height="40" rx="20" fill="rgba(0,229,255,0.15)" stroke="#00e5ff" stroke-width="1"/>
+    <text x="80" y="27" font-family="monospace" font-size="16" fill="#00e5ff" text-anchor="middle">Web Engineer</text>
+
+    <rect x="180" y="0" width="100" height="40" rx="20" fill="rgba(139,92,246,0.15)" stroke="#8b5cf6" stroke-width="1"/>
+    <text x="230" y="27" font-family="monospace" font-size="16" fill="#8b5cf6" text-anchor="middle">🇵🇰→🇯🇵</text>
+
+    <rect x="300" y="0" width="110" height="40" rx="20" fill="rgba(255,45,85,0.15)" stroke="#ff2d55" stroke-width="1"/>
+    <text x="355" y="27" font-family="monospace" font-size="16" fill="#ff2d55" text-anchor="middle">Survivor</text>
+
+    <rect x="430" y="0" width="130" height="40" rx="20" fill="rgba(0,217,160,0.15)" stroke="#00d9a0" stroke-width="1"/>
+    <text x="495" y="27" font-family="monospace" font-size="16" fill="#00d9a0" text-anchor="middle">Pura Vida ✨</text>
+  </g>
+
+  <!-- Decorative dots -->
+  <circle cx="1050" cy="150" r="80" fill="url(#waveGrad)" opacity="0.1"/>
+  <circle cx="1100" cy="100" r="40" fill="#00e5ff" opacity="0.2"/>
+  <circle cx="1000" cy="200" r="30" fill="#8b5cf6" opacity="0.2"/>
+
+  <!-- Border -->
+  <rect x="2" y="2" width="1196" height="626" rx="0" fill="none" stroke="url(#waveGrad)" stroke-width="2" opacity="0.3"/>
+</svg>

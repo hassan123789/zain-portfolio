@@ -1,0 +1,27 @@
+{
+	"name": "ZAIN Portfolio",
+	"short_name": "ZAIN",
+	"description": "Action = f(Survival of Identity) - パキスタン×日本×双極×エンジニア",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#050508",
+	"theme_color": "#00e5ff",
+	"orientation": "portrait-primary",
+	"icons": [
+		{
+			"src": "/icons/icon-192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/icons/icon-512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any maskable"
+		}
+	],
+	"categories": ["portfolio", "technology", "personal"],
+	"lang": "ja",
+	"dir": "ltr"
+}
