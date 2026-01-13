@@ -33,6 +33,6 @@
     "three": "^0.182.0"
   },
   "devDependencies": {
-    "wrangler": "^3.99.0"
+    "wrangler": "^4.54.0"
   }
 }
